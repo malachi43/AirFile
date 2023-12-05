@@ -1,5 +1,6 @@
 # AIRFILE
-- This API provides the following features:
+
+This API provides the following features:
 - upload files.
 - transfer files.
 - password protect for files.
