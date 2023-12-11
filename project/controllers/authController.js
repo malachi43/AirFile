@@ -38,16 +38,17 @@ const loginUser = asyncWrapper(async (req, res) => {
 })
 
 const registerUser = asyncWrapper(async (req, res) => {
+    console.log(req.body)
 
     const User = conn.model('User')
     const UserAuth = conn.model('UserAuth')
 
     const {
-        username, email, password, confirmPassword
+        username, email, password, confirm_password
     } = req.body
 
 
-    if (!(username || email || password || confirmPassword)) {
+    if (!(username || email || password || confirm_password)) {
         throw new BadRequestError("All fields must be provided.")
     }
 
@@ -57,7 +58,7 @@ const registerUser = asyncWrapper(async (req, res) => {
         throw new BadRequestError('User already exists.')
     }
 
-    if (password !== confirmPassword) {
+    if (password !== confirm_password) {
         throw new BadRequestError('password mismatch.')
     }
 

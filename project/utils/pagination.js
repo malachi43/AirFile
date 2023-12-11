@@ -1,6 +1,7 @@
 import { conn } from "../connectToDatabase/connect.js"
+import { asyncWrapper } from "../lib/asyncWrapper.js"
 
-const paginate = async ({ req, model, contentPerPage = 9, projection }) => {
+const paginate = asyncWrapper(async ({ req, model, contentPerPage = 9, projection }) => {
     let { page } = req.query
     const CONTENT_PER_PAGE = contentPerPage
     const LIMIT = CONTENT_PER_PAGE
@@ -30,6 +31,6 @@ const paginate = async ({ req, model, contentPerPage = 9, projection }) => {
         hasNext: page * CONTENT_PER_PAGE < numOfDocs,
         hasPrev: page > 1
     }
-}
+})
 
 export { paginate }

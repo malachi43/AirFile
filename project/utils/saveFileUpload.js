@@ -3,8 +3,10 @@ import mime from 'mime'
 import slash from "slash"
 import { filesize } from "filesize"
 import { BadRequestError } from "../errors/badRequest.js"
+import { asyncWrapper } from "../lib/asyncWrapper.js"
 
-const saveFileUpload = async (req, data) => {
+
+const saveFileUpload = asyncWrapper(async (req, data) => {
     const { _id } = req.user
     const { password, description } = req.body
 
@@ -39,7 +41,6 @@ const saveFileUpload = async (req, data) => {
 
 
 
-
         const newFile = new File(fileObj)
         await newFile.save()
 
@@ -55,7 +56,7 @@ const saveFileUpload = async (req, data) => {
         return
     })
 
-}
+})
 
 
 export { saveFileUpload }

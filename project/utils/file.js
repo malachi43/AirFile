@@ -1,8 +1,9 @@
 import { conn } from "../connectToDatabase/connect.js"
 import { deleteAsync } from "del"
 import fs from 'fs'
+import { asyncWrapper } from "../lib/asyncWrapper.js"
 
-const deleteAllFiles = async (req) => {
+const deleteAllFiles = asyncWrapper(async (req) => {
     const { _id } = req.user
 
     const File = conn.model('File')
@@ -25,9 +26,10 @@ const deleteAllFiles = async (req) => {
         }
     })
 }
+)
 
 
-const deleteSingleFile = async (req) => {
+const deleteSingleFile = asyncWrapper(async (req) => {
     const { _id } = req.user
     const { fileId } = req.params
     const File = conn.model('File')
@@ -48,6 +50,6 @@ const deleteSingleFile = async (req) => {
         throw new Error(`No file with that id.`)
     }
 }
-
+)
 
 export { deleteAllFiles, deleteSingleFile }

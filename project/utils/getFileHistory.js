@@ -1,6 +1,8 @@
+import { asyncWrapper } from "../lib/asyncWrapper.js";
 import { paginate } from "./pagination.js";
 
-const getFileHistory = async (req) => {
+
+const getFileHistory = asyncWrapper(async (req) => {
     let { docs, numOfPages, hasNext, hasPrev } = await paginate({
         req,
         model: 'FileHistory',
@@ -14,7 +16,7 @@ const getFileHistory = async (req) => {
         hasNext,
         hasPrev
     }
-}
+})
 
 
 export { getFileHistory }
