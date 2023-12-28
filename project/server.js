@@ -22,7 +22,7 @@ import path from 'path/posix'
 import { uploadFile, downloadFile } from './controllers/fileController.js'
 import { conn } from './connectToDatabase/connect.js'
 import { asyncWrapper } from './lib/asyncWrapper.js'
-const HOST = "172.20.10.3"
+// const HOST = "172.20.10.3"
 
 if (cluster.isPrimary) {
     for (let i = 0; i < numOfCpu; ++i) {
@@ -118,7 +118,7 @@ if (cluster.isPrimary) {
     async function startApp() {
         await mongoose.createConnection(process.env.MONGO_URI, { maxPoolSize: 10, minPoolSize: 5 })
         app.listen(PORT, () => {
-            console.log(`Server is listening on ${HOST}:${PORT}. Press Ctrl-C to terminate.`)
+            console.log(`Server is listening on :${PORT}. Press Ctrl-C to terminate.`)
         })
     }
 
