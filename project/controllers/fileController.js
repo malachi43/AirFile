@@ -113,7 +113,6 @@ const downloadFile = asyncWrapper(async (req, res) => {
             const fileAuth = await FileAuth.findOne({ userId: _id })
             const { password } = req.body
             const isPasswordCorrect = await fileAuth.isPasswordCorrect(password)
-            console.log(`is passwordcorrect: `, isPasswordCorrect)
             if (!isPasswordCorrect) {
                 throw new UnauthenticateError(`Password incorrect`)
             } else {

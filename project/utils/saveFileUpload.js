@@ -19,6 +19,8 @@ const saveFileUpload = async (req, data) => {
             const FileAuth = conn.model('FileAuth')
             const FileHistory = conn.model('FileHistory')
 
+            console.log(File, FileAuth, FileHistory)
+
             let fileAuthObj = {}
 
             const fileObj = {
@@ -30,6 +32,8 @@ const saveFileUpload = async (req, data) => {
                 filePath: process.platform === "win32" ? slash(path) : path,
                 dateCreated: Date.now()
             }
+            
+            console.log(`file password: `, password)
 
             if (password) {
                 fileAuthObj.filePassword = password
@@ -53,7 +57,6 @@ const saveFileUpload = async (req, data) => {
             fileHistory.createdOn = Date.now()
             await fileHistory.save()
 
-            return
         })
     } catch (error) {
         throw error

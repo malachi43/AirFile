@@ -42,7 +42,6 @@ const deleteSingleFile = async (req) => {
         const FileAuth = conn.model('FileAuth')
 
         const file = await File.findOne({ userId: _id, _id: fileId })
-        console.log(`file retrieved with userId_id and fileId: `, file)
 
         if (file) {
             if (fs.existsSync(process.env.UPLOAD_FOLDER)) {
