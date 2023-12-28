@@ -22,7 +22,6 @@ import path from 'path/posix'
 import { uploadFile, downloadFile } from './controllers/fileController.js'
 import { conn } from './connectToDatabase/connect.js'
 import { asyncWrapper } from './lib/asyncWrapper.js'
-// const HOST = "172.20.10.3"
 
 if (cluster.isPrimary) {
     for (let i = 0; i < numOfCpu; ++i) {
