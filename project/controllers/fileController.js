@@ -2,18 +2,17 @@ import { asyncWrapper } from '../lib/asyncWrapper.js'
 import { StatusCodes } from 'http-status-codes'
 import { saveFileUpload } from '../utils/saveFileUpload.js'
 import { deleteAllFiles, deleteSingleFile } from '../utils/file.js'
-// import fs from 'node:fs'
-import nodeFs from 'node:fs'
-import fsCyclic from '@cyclic.sh/s3fs'
-const s3 = fsCyclic(process.env.CYCLIC_BUCKET_NAME)
+import fs from 'node:fs'
+// import nodeFs from 'node:fs'
+// import fsCyclic from '@cyclic.sh/s3fs'
+// const s3 = fsCyclic(process.env.CYCLIC_BUCKET_NAME)
 import { paginate } from '../utils/pagination.js'
 import { getFileHistory } from '../utils/getFileHistory.js'
 import { conn } from '../connectToDatabase/connect.js'
 import { UnauthenticateError, NotFoundError, BadRequestError } from '../errors/index.js'
 import halson from 'halson'
 
-const fs = process.env.NODE_ENV === "production" ? s3 : nodeFs
-console.log(fs)
+// const fs = process.env.NODE_ENV === "production" ? s3 : nodeFs
 
 const getFiles = asyncWrapper(async (req, res) => {
     let { docs, numOfPages, hasNext, hasPrev } = await paginate(

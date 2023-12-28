@@ -1,13 +1,10 @@
-// import fs from 'node:fs'
-import nodeFs from 'node:fs'
-import fsCyclic from '@cyclic.sh/s3fs'
-const s3 = fsCyclic(process.env.CYCLIC_BUCKET_NAME)
-const fs = process.env.NODE_ENV === "production" ? s3 : nodeFs
-console.log(fs)
-// import { fileURLToPath } from 'node:url'
-// import { dirname } from 'node:path'
-// const __filename = import.meta.url
-// const __dirname = dirname(fileURLToPath(__filename))
+import fs from 'node:fs'
+// import nodeFs from 'node:fs'
+// import fsCyclic from '@cyclic.sh/s3fs'
+// const s3 = fsCyclic(process.env.CYCLIC_BUCKET_NAME)
+// const fs = process.env.NODE_ENV === "production" ? s3 : nodeFs
+// console.log(fs)
+
 
 const mkdir = (directory) => {
     directory.split('/').reduce((parentDirectory, subFolder) => {
