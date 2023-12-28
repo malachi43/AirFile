@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@cyclic.sh/s3fs": "^1.2.9",
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
     "cors": "^2.8.5",
@@ -33,7 +34,6 @@
   "directories": {
     "lib": "lib"
   },
-  "devDependencies": {},
   "author": "Uko Chibuike Malachi",
   "license": "MIT"
 }

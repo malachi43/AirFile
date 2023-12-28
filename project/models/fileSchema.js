@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose'
-import { userSchema } from './userSchema.js'
 import { timePassed } from '../lib/duration.js'
 
 const fileSchema = new mongoose.Schema({

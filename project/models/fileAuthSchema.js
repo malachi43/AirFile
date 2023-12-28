@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
 import { fileSchema } from "./fileSchema.js";
-import e from "cors";
 
 const fileAuthSchema = new mongoose.Schema({
     filePassword: String,

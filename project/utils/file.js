@@ -1,6 +1,10 @@
 import { conn } from "../connectToDatabase/connect.js"
 import { deleteAsync } from "del"
-import fs from 'fs'
+// import fs from 'fs'
+import nodeFs from 'node:fs'
+import fsCyclic from '@cyclic.sh/s3fs'
+const s3 = fsCyclic(process.env.CYCLIC_BUCKET_NAME)
+const fs = process.env.NODE_ENV === "production" ? s3 : nodeFs
 
 const deleteAllFiles = async (req) => {
     try {
