@@ -22,9 +22,16 @@ import path from 'path/posix'
 import { uploadFile, downloadFile } from './controllers/fileController.js'
 import { conn } from './connectToDatabase/connect.js'
 import { asyncWrapper } from './lib/asyncWrapper.js'
+import FirebaseStorage from "multer-firebase-storage"
+import fs from "node:fs"
+
 
 if (cluster.isPrimary) {
-    for (let i = 0; i < numOfCpu; ++i) {
+    // for (let i = 0; i < numOfCpu; ++i) {
+    //     cluster.fork()
+    // }
+
+    for (let i = 0; i < 1; ++i) {
         cluster.fork()
     }
 
@@ -50,22 +57,45 @@ if (cluster.isPrimary) {
     // app.set('views', join(__dirname, "views"))
 
     //location to store file 
-    const storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            const folder = process.env.UPLOAD_FOLDER
-            mkdir(folder)
-            cb(null, folder)
-        },
-        filename: function (req, file, cb) {
-            const { originalname } = file
-            cb(null, `${uuidv4()}${path.extname(originalname)}`)
-        }
-    })
+    // const storage = multer.diskStorage({
+    //     destination: function (req, file, cb) {
+    //         const folder = process.env.UPLOAD_FOLDER
+    //         mkdir(folder)
+    //         cb(null, folder)
+    //     },
+    //     filename: function (req, file, cb) {
+    //         const { originalname } = file
+    //         cb(null, `${uuidv4()}${path.extname(originalname)}`)
+    //     },
+    // })
 
 
 
     //instantiating multer
-    const upload = multer({ storage })
+    // const upload = multer({ storage })
+
+    //multer for firebase
+    const fileLoc = "firebaseCredentials/airfile-93a23-firebase-adminsdk-bqt9v-5193bf7cfd.json"
+    const jsonFile = JSON.parse(fs.readFileSync(fileLoc, "utf-8"))
+    let privateKey = jsonFile.private_key
+    // console.log(`privateKey: ` ,privateKey)
+    // console.log({
+    //     clientEmail: jsonFile.client_email,
+    //     privateKey: jsonFile.private_key,
+    //     projectId: jsonFile.project_id
+    // })
+    const upload = multer({
+        storage: FirebaseStorage({
+            bucketName: process.env.STORAGE_BUCKET,
+            credentials: {
+                clientEmail: jsonFile.client_email,
+                privateKey: jsonFile.private_key,
+                projectId: jsonFile.project_id
+            },
+            unique: true,
+            public: true
+        })
+    })
 
     const aWeek = 1000 * 60 * 60 * 24 * 7
 
@@ -98,6 +128,7 @@ if (cluster.isPrimary) {
         }
     }))
 
+    app.disable('x-powered-by')
     app.use(morgan('dev'))
 
     app.use(express.static(path.join(__dirname, 'public')))

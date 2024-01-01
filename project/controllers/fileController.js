@@ -11,6 +11,8 @@ import { getFileHistory } from '../utils/getFileHistory.js'
 import { conn } from '../connectToDatabase/connect.js'
 import { UnauthenticateError, NotFoundError, BadRequestError } from '../errors/index.js'
 import halson from 'halson'
+import { deleteFileFromFirebase } from '../firebaseInit/firebase.js'
+import axios from 'axios'
 
 // const fs = process.env.NODE_ENV === "production" ? s3 : nodeFs
 
@@ -105,9 +107,8 @@ const downloadFile = asyncWrapper(async (req, res) => {
 
     if (!file) throw new BadRequestError(`The requested resource is not available.`)
 
-    if (!fs.existsSync(file.filePath)) throw new BadRequestError(`The requested resource is not available.`)
-
     const isLocked = file.isLocked
+    const downloadLink = file.filePath
 
     if (isLocked && !req.body.password) {
         throw new BadRequestError(`Password field is required.`)
@@ -121,14 +122,15 @@ const downloadFile = asyncWrapper(async (req, res) => {
             if (!isPasswordCorrect) {
                 throw new UnauthenticateError(`Password incorrect`)
             } else {
-                return res.download(file.filePath, file.originalName, (err) => {
-                    deleteAfterDownload(err, req, file)
-                })
+                await axios.get(downloadLink)
+                await deleteSingleFile(req)
+
+                res.end(`file downloaded.`)
             }
         } else {
-            return res.download(file.filePath, file.originalName, (err) => {
-                deleteAfterDownload(err, req, file)
-            })
+            await axios.get(downloadLink)
+            await deleteSingleFile(req)
+            res.end(`file downloaded.`)
         }
 
     } else {
@@ -148,6 +150,7 @@ function deleteAfterDownload(err, req, file) {
             }
         })
     }
+
 }
 
 

@@ -4,36 +4,33 @@ import slash from "slash"
 import { filesize } from "filesize"
 import { BadRequestError } from "../errors/badRequest.js"
 
-
 const saveFileUpload = async (req, data) => {
     try {
         const { _id } = req.user
+
         const { password, description } = req.body
 
         if (data.length === 0) throw new BadRequestError(`please select a file to upload.`)
 
         //iterate through each file
-        data.forEach(async ({ originalname, mimetype, filename, path, size }) => {
+        data.forEach(async ({ originalname, mimetype, filename, path, size, fileRef: { metadata } }) => {
 
             const File = conn.model('File')
             const FileAuth = conn.model('FileAuth')
             const FileHistory = conn.model('FileHistory')
 
-            console.log(File, FileAuth, FileHistory)
-
             let fileAuthObj = {}
 
             const fileObj = {
                 userId: _id,
-                fileSize: filesize(size, { base: 2, standard: "jedec" }),
+                fileSize: filesize(metadata.size, { base: 2, standard: "jedec" }),
                 ext: mime.getExtension(mimetype),
                 originalName: originalname,
-                fileName: encodeURIComponent(filename.split(".")[0]),
-                filePath: process.platform === "win32" ? slash(path) : path,
+                fileName: metadata.name,
+                filePath: process.platform === "win32" ? slash(metadata.mediaLink) : metadata.mediaLink,
                 dateCreated: Date.now()
             }
-            
-            console.log(`file password: `, password)
+
 
             if (password) {
                 fileAuthObj.filePassword = password

@@ -81,7 +81,7 @@ const getRegisterPage = asyncWrapper(async (req, res) => {
 const logoutUser = asyncWrapper(async (req, res) => {
     req.session.destroy(function (err) {
         if (err) throw err
-        res.end()
+        res.end(`You successfully logout.`)
     })
 })
 
