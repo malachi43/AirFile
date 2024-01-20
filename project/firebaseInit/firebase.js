@@ -1,16 +1,16 @@
 import { dirname, join, resolve, relative } from 'node:path/posix'
 import { fileURLToPath } from 'node:url'
+import { config } from '../config.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 import dotenv from "dotenv"
 dotenv.config()
 import admin from 'firebase-admin'
-import fs from "node:fs"
 
 
-let path = join(__dirname, "firebaseCredentials", "airfile-93a23-firebase-adminsdk-bqt9v-5193bf7cfd.json")
-const jsonFile = JSON.parse(fs.readFileSync(path, "utf-8"))
+// let path = join(__dirname, "firebaseCredentials", "airfile-93a23-firebase-adminsdk-bqt9v-5193bf7cfd.json")
+// const config = JSON.parse(fs.readFileSync(path, "utf-8"))
 
 //storage bucket.
 let bucket;
@@ -18,7 +18,7 @@ let bucket;
 //initialize firebase.
 function initializeFirebase() {
     admin.initializeApp({
-        credential: admin.credential.cert(jsonFile),
+        credential: admin.credential.cert(config),
         storageBucket: process.env.STORAGE_BUCKET
     });
 
