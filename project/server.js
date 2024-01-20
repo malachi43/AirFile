@@ -15,16 +15,13 @@ import { notFound } from './middleware/notFound.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import { isAuthenticated } from './middleware/isAuthenticated.js'
-import { mkdir } from './lib/mkdir.js'
-import { v4 as uuidv4 } from "uuid"
 import morgan from 'morgan'
 import path from 'path/posix'
 import { uploadFile, downloadFile } from './controllers/fileController.js'
 import { conn } from './connectToDatabase/connect.js'
 import { asyncWrapper } from './lib/asyncWrapper.js'
 import FirebaseStorage from "multer-firebase-storage"
-import fs from "node:fs"
-
+import { config } from "./config.js"
 
 if (cluster.isPrimary) {
     for (let i = 0; i < numOfCpu; ++i) {
@@ -71,22 +68,13 @@ if (cluster.isPrimary) {
     // const upload = multer({ storage })
 
     //multer for firebase
-    const fileLoc = "firebaseCredentials/airfile-93a23-firebase-adminsdk-bqt9v-5193bf7cfd.json"
-    const jsonFile = JSON.parse(fs.readFileSync(fileLoc, "utf-8"))
-    let privateKey = jsonFile.private_key
-    // console.log(`privateKey: ` ,privateKey)
-    // console.log({
-    //     clientEmail: jsonFile.client_email,
-    //     privateKey: jsonFile.private_key,
-    //     projectId: jsonFile.project_id
-    // })
     const upload = multer({
         storage: FirebaseStorage({
             bucketName: process.env.STORAGE_BUCKET,
             credentials: {
-                clientEmail: jsonFile.client_email,
-                privateKey: jsonFile.private_key,
-                projectId: jsonFile.project_id
+                clientEmail: config.client_email,
+                privateKey: config.private_key,
+                projectId: config.project_id
             },
             unique: true,
             public: true

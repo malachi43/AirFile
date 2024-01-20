@@ -15,7 +15,6 @@ const fileAuthSchema = new mongoose.Schema({
 
 fileAuthSchema.methods.isPasswordCorrect = async function (passwordSubmitted) {
     let stringifiedPassword = String(passwordSubmitted)
-    console.log(`the file password you entered: `, stringifiedPassword)
 
     const res = await bcrypt.compare(stringifiedPassword, this.filePassword)
     console.log(res)
