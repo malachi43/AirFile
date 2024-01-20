@@ -15,12 +15,17 @@ const fileAuthSchema = new mongoose.Schema({
 
 fileAuthSchema.methods.isPasswordCorrect = async function (passwordSubmitted) {
     let stringifiedPassword = String(passwordSubmitted)
-    return await bcrypt.compare(stringifiedPassword, this.filePassword)
+    console.log(`the file password you entered: `, stringifiedPassword)
+
+    const res = await bcrypt.compare(stringifiedPassword, this.filePassword)
+    console.log(res)
+    return res
 }
 
 
 fileAuthSchema.pre('save', async function () {
-    if (this.filePassword) {
+    console.log(`in fileAuth pre-save this.filePassword: `, this.filePassword)
+    if (this.isModified('filePassword')) {
         const salt = await bcrypt.genSalt(10)
         this.filePassword = await bcrypt.hash(this.filePassword, salt)
     } else {

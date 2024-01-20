@@ -38,7 +38,6 @@ const loginUser = asyncWrapper(async (req, res) => {
 })
 
 const registerUser = asyncWrapper(async (req, res) => {
-    console.log(req.body)
 
     const User = conn.model('User')
     const UserAuth = conn.model('UserAuth')

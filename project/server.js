@@ -27,11 +27,7 @@ import fs from "node:fs"
 
 
 if (cluster.isPrimary) {
-    // for (let i = 0; i < numOfCpu; ++i) {
-    //     cluster.fork()
-    // }
-
-    for (let i = 0; i < 1; ++i) {
+    for (let i = 0; i < numOfCpu; ++i) {
         cluster.fork()
     }
 
