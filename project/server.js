@@ -119,9 +119,8 @@ if (cluster.isPrimary) {
 
     //documentation
     app.get('/', (req, res) => {
-        let documentationLink = `https://documenter.getpostman.com/view/23505718/2s9YymGjeG`
 
-        res.status(302).redirect(documentationLink)
+        res.status(302).redirect(process.env.DOC_LINK)
     })
     app.post('/files/downloads/:fileId', isAuthenticated, upload.none(), downloadFile)
     app.post('/files/uploads', isAuthenticated, upload.array('file-upload'), uploadFile)
