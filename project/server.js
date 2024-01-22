@@ -119,8 +119,8 @@ if (cluster.isPrimary) {
 
     //documentation
     app.get('/', (req, res) => {
-
-        res.status(302).redirect(process.env.DOC_LINK)
+        req.url = process.env.DOC_LINK
+        res.status(302).redirect(req.url)
     })
     app.post('/files/downloads/:fileId', isAuthenticated, upload.none(), downloadFile)
     app.post('/files/uploads', isAuthenticated, upload.array('file-upload'), uploadFile)
