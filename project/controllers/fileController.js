@@ -44,7 +44,7 @@ const getSingleFile = asyncWrapper(async (req, res) => {
     const { _id } = req.user
     const { fileId } = req.params
 
-
+    console.log(`file Id: `, fileId)
     const File = conn.model('File')
     const file = await File.findOne({ userId: _id, _id: fileId })
         .select({ '__v': 0, })
