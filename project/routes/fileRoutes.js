@@ -6,9 +6,9 @@ const router = express.Router()
 
 router.get('/', getFiles)
 router.delete('/', isAuthenticated, deleteFiles)
-router.get('/history',  fileHistory)
 router.get('/:fileId',isAuthenticated, getSingleFile)
 router.delete('/:fileId', isAuthenticated, deleteFile)
+router.get('/history',  fileHistory)
 
 
 export { router }
