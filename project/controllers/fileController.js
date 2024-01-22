@@ -50,7 +50,7 @@ const getSingleFile = asyncWrapper(async (req, res) => {
         .select({ '__v': 0, })
         .lean()
 
-    if (!file) throw new BadRequestError(`The requsted resource could notbe found.`)
+    if (!file) throw new BadRequestError(`The requested resource could notbe found.`)
 
     const resource = halson({ ...file })
         .addLink('self', { href: `/files/${file._id}` })
