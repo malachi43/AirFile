@@ -118,8 +118,10 @@ if (cluster.isPrimary) {
     app.use(express.static(path.join(__dirname, 'public')))
 
     app.get('/', asyncWrapper(async (req, res) => {
-        let documentation = `<h1><a href=${process.env.DOC_LINK}> AIRFILE DOCUMENTATION </a></h1>`
-        res.status(200).send(documentation)
+
+        let docButton = `<a href=${process.env.DOC_LINK} style="display: inline-block; padding:8px 16px; background: rgba(0,0,255, 0.5); color: white; border-radius: 15px; text-decoration:none; margin: 20px"> <b> GO TO DOCUMENTATION </b> </a>`
+
+        res.status(200).send(docButton)
     }))
     app.post('/files/downloads/:fileId', isAuthenticated, upload.none(), downloadFile)
     app.post('/files/uploads', isAuthenticated, fileLimitCheck, upload.array('file-upload'), uploadFile)
