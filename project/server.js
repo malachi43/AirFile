@@ -117,6 +117,11 @@ if (cluster.isPrimary) {
 
     app.use(express.static(path.join(__dirname, 'public')))
 
+    app.get('/', asyncWrapper(async(req,res)=>{
+        const url = new URL(process.env.DOC_LINK)
+        console.log(url)
+        res.status(302).redirect(process.env.DOC_LINK)
+    }))
     app.post('/files/downloads/:fileId', isAuthenticated, upload.none(), downloadFile)
     app.post('/files/uploads', isAuthenticated, fileLimitCheck, upload.array('file-upload'), uploadFile)
     app.use('/auth', authRoute)
