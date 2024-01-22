@@ -22,7 +22,7 @@ const getFiles = asyncWrapper(async (req, res) => {
             req,
             model: 'File',
             contentPerPage: 9,
-            projection: { originalName: 1, userId: 1, fileSize: 1, ext: 1, isLocked: 1, filePath: 1, dateCreated: 1,fileName: 1 }
+            projection: { originalName: 1, userId: 1, fileSize: 1, ext: 1, isLocked: 1, filePath: 1, dateCreated: 1, fileName: 1, fileDescription: 1 }
         }
     )
 

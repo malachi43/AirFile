@@ -19,7 +19,10 @@ const fileSchema = new mongoose.Schema({
         type: String,
         required: [true, "filePath is required."]
     },
-    fileDescription: String,
+    fileDescription: {
+        type: String,
+        default: ""
+    },
     isLocked: {
         type: Boolean,
         required: [true, "isLocked is required."],
