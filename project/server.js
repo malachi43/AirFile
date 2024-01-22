@@ -116,6 +116,13 @@ if (cluster.isPrimary) {
     app.use(morgan('dev'))
 
     app.use(express.static(path.join(__dirname, 'public')))
+
+    //documentation
+    app.get('/', (req, res) => {
+        let documentationLink = `https://documenter.getpostman.com/view/23505718/2s9YymGjeG`
+
+        res.status(302).redirect(documentationLink)
+    })
     app.post('/files/downloads/:fileId', isAuthenticated, upload.none(), downloadFile)
     app.post('/files/uploads', isAuthenticated, upload.array('file-upload'), uploadFile)
     app.use('/auth', authRoute)
