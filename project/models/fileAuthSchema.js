@@ -23,7 +23,6 @@ fileAuthSchema.methods.isPasswordCorrect = async function (passwordSubmitted) {
 
 
 fileAuthSchema.pre('save', async function () {
-    console.log(`in fileAuth pre-save this.filePassword: `, this.filePassword)
     if (this.isModified('filePassword')) {
         const salt = await bcrypt.genSalt(10)
         this.filePassword = await bcrypt.hash(this.filePassword, salt)

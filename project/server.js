@@ -118,7 +118,7 @@ if (cluster.isPrimary) {
     app.use(express.static(path.join(__dirname, 'public')))
 
     app.post('/files/downloads/:fileId', isAuthenticated, upload.none(), downloadFile)
-    app.post('/files/uploads', isAuthenticated, upload.array('file-upload'), uploadFile)
+    app.post('/files/uploads', isAuthenticated, fileLimitCheck, upload.array('file-upload'), uploadFile)
     app.use('/auth', authRoute)
     app.use('/users', isAuthenticated, userRoute)
     app.use('/files', fileRoute)
@@ -149,4 +149,14 @@ if (cluster.isPrimary) {
         }
     }
 
+}
+
+
+function fileLimitCheck(req, res, next) {
+    let maxSize = process.env.FILE_MAX_SIZE
+    if (parseInt(req.headers["content-length"], 10) > parseInt(maxSize, 10)) {
+        throw new Error(`file size limit exceeded, upload file less than ${process.env.FILE_MAX_SIZE} bytes.`)
+    } else {
+        next()
+    }
 }
